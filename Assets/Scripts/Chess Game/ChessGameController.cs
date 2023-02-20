@@ -11,6 +11,7 @@ public class ChessGameController : MonoBehaviour
     [SerializeField] private BoardLayout startingBoardLayout;
     [SerializeField] private Board board;
     private PieceCreator pieceCreator;
+    public int count = 1; // odd = white/ even = black
 
      private void Awake()
     {
@@ -75,7 +76,22 @@ public class ChessGameController : MonoBehaviour
                 }
                 if (distance < board.squareSize*1.5)
                 {
-                    newPiece.MovePiece(newCoords);
+                    if (team == TeamColor.White && count%2==1)
+                    {
+                        newPiece.MovePiece(newCoords);
+                        team = TeamColor.Black;
+                        count++;    
+                    }
+                    else if (team == TeamColor.Black && count%2==0)
+                    {
+                        newPiece.MovePiece(newCoords);
+                        team = TeamColor.White;
+                        count++;    
+                    }
+                    else
+                    {
+                        newPiece.MovePiece(newPiece.occupiedSquare);
+                    }
                 } else 
                 {
                     newPiece.MovePiece(newPiece.occupiedSquare);
@@ -92,5 +108,4 @@ public class ChessGameController : MonoBehaviour
             newPiece.transform.Rotate(0.0f, 180.0f, 0.0f, Space.Self);
         }
     }
-
 }
